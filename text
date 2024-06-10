@@ -1,0 +1,8 @@
+. env/bin/activate
+pip install django
+django-admin startproject foodOnline_main .
+python manage.py runserver
+ git pass:cs67AZ7890
+================================================
+git init
+
