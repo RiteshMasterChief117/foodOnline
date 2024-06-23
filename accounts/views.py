@@ -10,7 +10,7 @@ from accounts.forms import UserForm
 from .models import User, UserProfile
 from django.contrib import messages, auth
 
-from .utils import detectUser, send_verification_email, send_password_reset_email
+from .utils import detectUser, send_verification_email
 
 
 # Restrict the vendor from accessing the customer page
@@ -58,7 +58,9 @@ def registerUser(request):
             #  print("user is created from registerUser")
 
             # send verification email
-            send_verification_email(request, user)
+            mail_subject = 'Please activate your account'
+            email_template = 'accounts/emails/account_verification_email.html'
+            send_verification_email(request, user, mail_subject, email_template)
             messages.success(request, 'Your Account has been registered successfully')
             return redirect('registerUser')
         else:
@@ -100,7 +102,9 @@ def registerVendor(request):
             vendor.save()
 
             # send verification email
-            send_verification_email(request, user)
+            mail_subject = 'Please activate your account'
+            email_template = 'accounts/emails/account_verification_email.html'
+            send_verification_email(request, user, mail_subject, email_template)
 
             messages.success(request, 'Your account has been created successfully please wait for the approval.')
             return redirect('registerVendor')
@@ -191,7 +195,7 @@ def forgot_password(request):
             # send reset password email
             mail_subject = 'Reset Your Password'
             email_template = 'accounts/emails/reset_password_email.html'
-            send_password_reset_email(request, user, mail_subject, email_template)
+            send_verification_email(request, user, mail_subject, email_template)
 
             messages.success(request, 'Password reset link has been sent to your email address.')
             return redirect('login')
